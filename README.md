@@ -1,5 +1,4 @@
 # PluginlibLecture
-ROS 2 pluginlib lecture
 
 ## 1. pluginlibとは
 pluginlibは、ROS 2における1つのノードを拡張するための仕組みです。
@@ -18,16 +17,53 @@ pluginlibは、ROS 2における1つのノードを拡張するための仕組�
 
 Pluginlibであれば、この問題を解決できるだけでなく、コンパイル時にその従属関係を明示する必要がありません。
 
-ロード時は文字列を使用して指定します。そのため、ロード対象のライブラリをパラメータとして指定することも可能ということです。
+また、ロード時は文字列を使用して指定します。そのため、ロード対象のライブラリをパラメータとして指定することも可能ということです。
 
 ![](./image/puglinlib_overview.png)
 
+<br>
 
 ## 解説
 
 ここでは、CoRE-1（ロボコン）2024で使用される画像処理ノード `PanelDetector` を使用します。
 
+<br>
+
+[StrayedCats/PanelDetector](https://github.com/StrayedCats/PanelDetector)
+
 このノードは現在開発中なので、もしかしたら変更が加わるかもしれません。
+
+
+<br>
+
+依存関係は以下のようになっています。
+
+```mermaid
+---
+title: Panel Detector Plugin hierarchy
+---
+classDiagram
+    実装対象 <-- プラグインA : 動的にロード
+    実装対象 <-- プラグインB : 動的にロード
+    プラグインA <|-- プラグインのベース : include
+    プラグインB <|-- プラグインのベース : include
+    実装対象 <|-- プラグインのベース : include
+    実装対象: params
+    実装対象: image_callback(Image)
+    class プラグインA{
+        init(params)
+        processing(cv::Mat)
+    }
+    class プラグインB{
+        init(params)
+        processing(cv::Mat)
+    }
+    class プラグインのベース{
+        virtual init(params)
+        virtual processing(cv::Mat)
+    }
+```
+
 
 <br>
 
@@ -38,6 +74,8 @@ Pluginlibは実装の性質上、ゴールを先に解説していきます。
 - Pluginlib
 
 また、`CMakeLists.txt` や `package.xml` についてはいちいち説明はしません。詳しくは[PanelDetector](https://github.com/StrayedCats/PanelDetector)リポジトリをご覧ください。
+
+<br>
 
 ### 実装対象（ゴール）
 
@@ -151,9 +189,9 @@ RCLCPP_COMPONENTS_REGISTER_NODE(panel_detector_node::PanelDetectorNode)
 ```
 </details>
 
+<br>
 
-
-### Pluginlibのベース
+### プラグインのベース
 
 Pluginlibを使用するには、ベースとなるクラスを作成する必要があります。
 
@@ -187,6 +225,8 @@ protected:
 ```
 
 </details>
+
+<br>
 
 ### プラグイン（実装対象）
 
@@ -254,6 +294,8 @@ PLUGINLIB_EXPORT_CLASS(panel_detector_plugins::PublishCenter, panel_detector_bas
 ```
 
 </details>
+
+<br>
 
 Pluginlibを登録するためには、それを登録するためにxmlファイルを作成してCMake（`colcon build`）で登録する必要があります。
 
