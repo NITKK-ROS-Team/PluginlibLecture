@@ -1,6 +1,6 @@
 # PluginlibLecture
 
-## 1. pluginlibとは
+## pluginlibとは
 pluginlibは、ROS 2における1つのノードを拡張するための仕組みです。
 
 画像を取得して特定の物体の二次元座標を出力するプログラムを書きたいと思ったとき、その方法はいくつかありますが、この機能の分岐方法には頭を悩ますことでしょう。
@@ -380,3 +380,9 @@ Pluginlib自体は最初から実装が決まっている場合は不要に感�
 Pluginlibのベースとなっているclass_loaderは、ROS 2では様々な部分で使用されているので、知っておくと良いでしょう。
 
 <br>
+
+## 参考
+
+- [ROS Wiki](http://wiki.ros.org/pluginlib)：ROS 1のPluginlibの使用方法ですが、基本的な考え方は同じです。
+- [Creating and using plugins (C++)](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Pluginlib.html)：ROS 2のPluginlibの使用方法です。例題もあります。
+- [pluginlib](https://github.com/ros/pluginlib/tree/humble)：Pluginlibのソースコードです。
