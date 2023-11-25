@@ -144,6 +144,7 @@ PanelDetectorNode::PanelDetectorNode(const rclcpp::NodeOptions & options)
   // detector_loader_の初期化はここで行う
   detection_loader_("panel_detector_base", "panel_detector_base::Detector")
 {
+  // generate_parameter_libraryのパラメータを取得
   this->param_listener_ = std::make_shared<panel_detector_parameters::ParamListener>(
     this->get_node_parameters_interface());
   const auto params = this->param_listener_->get_params();
@@ -367,5 +368,15 @@ ament_auto_package()
 また、Pluginの場所は `panel_detector_plugins` でなくても構いません。新しくpkgを作成した場合は、 `panel_detector_node.hpp` の `detection_loader_` の第一引数を変更することで、Pluginの場所を変更することができます。
 
 ただし、ロードするPluginは `panel_detector_base::Detector` を継承している必要があります。
+
+<br>
+
+## まとめ
+
+ここでは、Pluginlibの簡単な使用方法について説明しました。
+
+Pluginlib自体は最初から実装が決まっている場合は不要に感じるかもしれませんが、実装を並行して異なる手法で行いたい場合や、手法の比較を残したい場合などの開発時には非常に便利です。
+
+Pluginlibのベースとなっているclass_loaderは、ROS 2では様々な部分で使用されているので、知っておくと良いでしょう。
 
 <br>
